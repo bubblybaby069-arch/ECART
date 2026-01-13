@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eCart App</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- ================= LOGIN PAGE ================= -->
+  <div id="loginPage" class="flex items-center justify-center min-h-screen 
+                        bg-gradient-to-r from-yellow-400 via-blue-500 to-green-600
+                        p-4">
+    <div class="bg-gradient-to-r from-orange-500 via-yellow-50 to-green-900 
+            p-6 sm:p-8 md:p-10 rounded-xl shadow-lg w-full max-w-sm text-black">
+      <h2 class="text-3xl sm:text-4xl font-bold text-center mb-6 text-gray-800">
+        Login
+      </h2>
+
+      <input id="username" type="text" placeholder="Username"
+        class="w-full border border-gray-300 p-3 rounded mb-4 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition">
+
+      <input id="password" type="password" placeholder="Password"
+        class="w-full border border-gray-300 p-3 rounded mb-2 focus:outline-none focus:ring-2 focus:ring-orange-400 focus:border-transparent transition">
+
+      <label class="flex items-center text-sm mb-4">
+        <input type="checkbox" onclick="togglePassword()" class="mr-2"> Show Password
+      </label>
+
+      <button onclick="login()"
+        class="w-full bg-orange-600 hover:bg-green-700 text-white py-3 rounded font-semibold text-lg transition">
+        Login
+      </button>
+    </div>
+  </div>
+
+  <!-- ================= eCart PAGE ================= -->
+  <div id="cartPage" class="hidden">
+
+    <!-- Navbar -->
+    <header class="bg-white shadow sticky top-0 z-50">
+      <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between p-4 gap-3">
+        <h1 class="text-2xl font-bold flex items-center gap-1">
+          <span class="text-black">E</span>
+          <span class="text-blue-600">C</span>
+          <span class="text-black">A</span>
+          <span class="text-orange-600">R</span>
+          <span class="text-black">T</span>
+        </h1>
+
+        <!-- Search Bar -->
+        <div class="w-full sm:w-1/2">
+          <input id="searchInput" type="text" placeholder="Search products..." class="w-full p-2 border rounded shadow"
+            onkeyup="filterItems()">
+        </div>
+
+        <!-- User & Logout -->
+        <div class="flex items-center gap-3">
+          <span id="userDisplay" class="font-semibold"></span>
+          <button onclick="logout()" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded transition">
+            Logout
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- ================= BANNER ================= -->
+    <section class="w-full relative h-screen">
+      <div id="banner" class="relative w-full h-full overflow-hidden">
+        <img id="bannerImage" src="f0f9e45724771f16745ad3f6f640d3ce.jpg"
+          class="w-full h-full object-cover transition duration-700">
+        <div
+          class="absolute inset-0 bg-black bg-opacity-40 flex flex-col justify-center items-center text-center text-white p-4">
+          <h2 class="text-4xl sm:text-6xl font-bold mb-4">Welcome to eCart</h2>
+          <p class="mb-6 text-xl sm:text-2xl">Shop Electronics, Dresses, Footwear & more!</p>
+          <button onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})"
+            class="bg-yellow-500 text-black px-8 py-3 rounded font-semibold hover:bg-yellow-400 transition text-lg sm:text-xl">
+            Start Shopping
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ================= INTRODUCTION ================= -->
+    <section class="max-w-6xl mx-auto p-6 mt-6 bg-white rounded-xl shadow text-center">
+      <h2 class="text-3xl font-bold mb-2 text-gray-800">Welcome to eCart!</h2>
+      <p class="text-lg text-gray-600 mb-4">
+        Explore the best Electronics, Dresses, Footwear & much more.
+        Shop securely and get fast delivery at your doorstep.
+      </p>
+      <button onclick="document.getElementById('categories').scrollIntoView({behavior:'smooth'})"
+        class="bg-blue-600 text-white px-6 py-3 rounded font-semibold hover:bg-blue-700 transition">
+        Start Shopping
+      </button>
+    </section>
+
+    <!-- ================= CATEGORIES ================= -->
+    <div id="categories" class="max-w-6xl mx-auto m-4 p-6 rounded-xl shadow bg-white">
+      <h2 class="text-xl font-semibold text-center mb-4">Categories</h2>
+      <div class="flex flex-col sm:flex-row justify-center gap-3 mb-6">
+        <button onclick="showCategory('electronics')"
+          class="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">Electronics</button>
+        <button onclick="showCategory('dresses')"
+          class="bg-pink-600 text-white px-6 py-2 rounded hover:bg-pink-700 transition">Dresses</button>
+        <button onclick="showCategory('footwear')"
+          class="bg-purple-600 text-white px-6 py-2 rounded hover:bg-purple-700 transition">Footwear</button>
+      </div>
+    </div>
+
+    <!-- ================= PRODUCTS ================= -->
+    <section class="max-w-6xl mx-auto p-4">
+
+      <!-- ================= ELECTRONICS ================= -->
+<div id="electronics" class="hidden">
+  <h2 class="text-blue-600 text-2xl font-bold mb-4">Electronics</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+    <!-- Laptop -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="https://images.unsplash.com/photo-1517336714731-489689fd1ca8">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Laptop</h3>
+        <p class="font-bold text-blue-600">₹40,000</p>
+        <button onclick="addOrder('Laptop',40000)"
+          class="bg-blue-600 text-white px-4 py-1 rounded mt-2 hover:bg-blue-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Headphones -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="headephone.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Headphones</h3>
+        <p class="font-bold text-blue-600">₹2,000</p>
+        <button onclick="addOrder('Headphones',2000)"
+          class="bg-blue-600 text-white px-4 py-1 rounded mt-2 hover:bg-blue-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Smartphone -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="https://images.unsplash.com/photo-1511707171634-5f897ff02aa9">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Smartphone</h3>
+        <p class="font-bold text-blue-600">₹25,000</p>
+        <button onclick="addOrder('Smartphone',25000)"
+          class="bg-blue-600 text-white px-4 py-1 rounded mt-2 hover:bg-blue-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Smart Watch -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="smartwahches.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Smart Watch</h3>
+        <p class="font-bold text-blue-600">₹5,000</p>
+        <button onclick="addOrder('Smart Watch',5000)"
+          class="bg-blue-600 text-white px-4 py-1 rounded mt-2 hover:bg-blue-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Bluetooth Speaker -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="ac237f901f52afd369df2ce53a7ed64e.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg"> JBL Bluetooth Speaker</h3>
+        <p class="font-bold text-blue-600">₹3,500</p>
+        <button onclick="addOrder('Bluetooth Speaker',3500)"
+          class="bg-blue-600 text-white px-4 py-1 rounded mt-2 hover:bg-blue-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Camera -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="camera.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg"> CanonCamera</h3>
+        <p class="font-bold text-blue-600">₹30,000</p>
+        <button onclick="addOrder('Camera',30000)"
+          class="bg-blue-600 text-white px-4 py-1 rounded mt-2 hover:bg-blue-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+     <!-- ================= DRESSES ================= -->
+<div id="dresses" class="hidden">
+  <h2 class="text-pink-600 text-2xl font-bold mb-4">Dresses</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+
+    <!-- Shirt -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="menshirt.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Men Shirt</h3>
+        <p class="font-bold text-pink-600">₹1,200</p>
+        <button onclick="addOrder('Men Shirt',1200)"
+          class="bg-pink-600 text-white px-4 py-1 rounded mt-2 hover:bg-pink-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- T-Shirt -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="tshirt.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">T-Shirt</h3>
+        <p class="font-bold text-pink-600">₹700</p>
+        <button onclick="addOrder('T-Shirt',700)"
+          class="bg-pink-600 text-white px-4 py-1 rounded mt-2 hover:bg-pink-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Kurta -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="kurtha.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Kurta</h3>
+        <p class="font-bold text-pink-600">₹1,500</p>
+        <button onclick="addOrder('Kurta',1500)"
+          class="bg-pink-600 text-white px-4 py-1 rounded mt-2 hover:bg-pink-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Saree -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="saree.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Saree</h3>
+        <p class="font-bold text-pink-600">₹2,500</p>
+        <button onclick="addOrder('Saree',2500)"
+          class="bg-pink-600 text-white px-4 py-1 rounded mt-2 hover:bg-pink-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Jeans -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="https://images.unsplash.com/photo-1542272604-787c3835535d">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Jeans</h3>
+        <p class="font-bold text-pink-600">₹1,800</p>
+        <button onclick="addOrder('Jeans',1800)"
+          class="bg-pink-600 text-white px-4 py-1 rounded mt-2 hover:bg-pink-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Pants -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="menshirt.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Formal Pants</h3>
+        <p class="font-bold text-pink-600">₹1,600</p>
+        <button onclick="addOrder('Formal Pants',1600)"
+          class="bg-pink-600 text-white px-4 py-1 rounded mt-2 hover:bg-pink-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Skirt -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="skirt.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Skirt</h3>
+        <p class="font-bold text-pink-600">₹1,200</p>
+        <button onclick="addOrder('Skirt',1200)"
+          class="bg-pink-600 text-white px-4 py-1 rounded mt-2 hover:bg-pink-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Evening Dress -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="evng.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Evening Dress</h3>
+        <p class="font-bold text-pink-600">₹2,000</p>
+        <button onclick="addOrder('Evening Dress',2000)"
+          class="bg-pink-600 text-white px-4 py-1 rounded mt-2 hover:bg-pink-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+      <!-- ================= FOOTWEAR ================= -->
+<div id="footwear" class="hidden">
+  <h2 class="text-purple-600 text-2xl font-bold mb-4">Footwear</h2>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6">
+
+    <!-- Sneakers -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="sneakers.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Sneakers</h3>
+        <p class="font-bold text-purple-600">₹3,000</p>
+        <button onclick="addOrder('Sneakers',3000)"
+          class="bg-purple-600 text-white px-4 py-1 rounded mt-2 hover:bg-purple-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Sports Shoes -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="sportsshoes.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Sports Shoes</h3>
+        <p class="font-bold text-purple-600">₹3,500</p>
+        <button onclick="addOrder('Sports Shoes',3500)"
+          class="bg-purple-600 text-white px-4 py-1 rounded mt-2 hover:bg-purple-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Formal Shoes -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="formalshoes.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Formal Shoes</h3>
+        <p class="font-bold text-purple-600">₹4,000</p>
+        <button onclick="addOrder('Formal Shoes',4000)"
+          class="bg-purple-600 text-white px-4 py-1 rounded mt-2 hover:bg-purple-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+    <!-- Boots -->
+    <div class="border rounded-xl shadow hover:shadow-lg bg-white transition">
+      <img class="h-40 w-full object-cover rounded-t-xl"
+        src="boots.jpg">
+      <div class="p-3 text-center">
+        <h3 class="font-semibold text-lg">Boots</h3>
+        <p class="font-bold text-purple-600">₹4,500</p>
+        <button onclick="addOrder('Boots',4500)"
+          class="bg-purple-600 text-white px-4 py-1 rounded mt-2 hover:bg-purple-700 transition">
+          Add to Cart
+        </button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+      <!-- ================= CART ================= -->
+      <h2 class="text-xl font-semibold mt-8">Cart Items</h2>
+      <div class="overflow-x-auto">
+        <table class="w-full border mt-2 text-center">
+          <thead class="bg-gray-200">
+            <tr>
+              <th class="border p-2">Item</th>
+              <th class="border p-2">Price</th>
+              <th class="border p-2">Qty</th>
+              <th class="border p-2">Action</th>
+            </tr>
+          </thead>
+          <tbody id="orderList"></tbody>
+        </table>
+      </div>
+      <p class="text-right font-bold mt-3">Total: ₹<span id="total">0</span></p>
+      <button onclick="submitOrder()"
+        class="w-full bg-green-700 text-white py-3 rounded mt-4 hover:bg-green-800 transition">
+        Checkout
+      </button>
+    </section>
+
+    <!-- ================= CHECKOUT ================= -->
+    <section id="checkoutSection" class="max-w-6xl mx-auto p-6 mt-8 bg-white rounded-xl shadow hidden">
+      <h2 class="text-2xl font-bold mb-4">Checkout</h2>
+
+      <div class="mb-4">
+        <label class="block font-semibold mb-1">Full Name</label>
+        <input id="fullName" type="text" class="w-full border p-2 rounded" placeholder="Your Name">
+      </div>
+      <div class="mb-4">
+        <label class="block font-semibold mb-1">Address</label>
+        <textarea id="address" class="w-full border p-2 rounded" placeholder="Your Address"></textarea>
+      </div>
+      <div class="mb-4">
+        <label class="block font-semibold mb-1">Payment Method</label>
+        <select id="paymentMethod" class="w-full border p-2 rounded" onchange="togglePaymentButton()">
+          <option value="cod">Cash on Delivery</option>
+          <option value="online">Online Payment</option>
+        </select>
+      </div>
+
+      <button id="placeOrderBtn" onclick="placeOrder()"
+        class="w-full bg-green-700 text-white py-3 rounded hover:bg-green-800 transition">
+        Place Order
+      </button>
+
+      <button id="payNowBtn" onclick="payOnline()"
+        class="w-full bg-blue-600 text-white py-3 rounded hover:bg-blue-700 transition hidden mt-2">
+        Pay Now
+      </button>
+    </section>
+
+    <!-- ================= SUCCESS PAGE ================= -->
+    <section id="successPage" class="max-w-6xl mx-auto p-6 mt-8 bg-green-100 rounded-xl shadow hidden text-center">
+      <h2 class="text-3xl font-bold mb-4 text-green-800">Order Placed Successfully!</h2>
+      <p class="mb-4">Thank you for shopping with eCart.</p>
+      <p class="font-semibold">Your Order Total: ₹<span id="successTotal">0</span></p>
+      <p class="font-semibold">Payment Method: <span id="successPayment"></span></p>
+      <p class="mt-2">Delivery to: <span id="successAddress"></span></p>
+      <button onclick="location.reload()"
+        class="mt-4 bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition">
+        Back to Home
+      </button>
+    </section>
+
+    <!-- ================= FOOTER ================= -->
+    <footer class="bg-gray-800 text-white mt-12">
+      <div class="max-w-6xl mx-auto p-6 grid grid-cols-1 sm:grid-cols-3 gap-6">
+        <div>
+          <h3 class="font-bold mb-2">eCart</h3>
+          <p>Shop the latest Electronics, Dresses, Footwear & more!</p>
+        </div>
+        <div>
+          <h3 class="font-bold mb-2">Quick Links</h3>
+          <ul>
+            <li><a href="#" class="hover:underline">Home</a></li>
+            <li><a href="#" class="hover:underline">Categories</a></li>
+            <li><a href="#" class="hover:underline">Cart</a></li>
+            <li><a href="#" class="hover:underline">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h3 class="font-bold mb-2">Follow Us</h3>
+          <div class="flex gap-3">
+            <a href="#" class="hover:text-blue-500">Facebook</a>
+            <a href="#" class="hover:text-blue-400">Twitter</a>
+            <a href="#" class="hover:text-pink-500">Instagram</a>
+          </div>
+        </div>
+      </div>
+      <div class="text-center p-4 bg-gray-900 text-sm">
+        &copy; 2026 eCart. All Rights Reserved.
+      </div>
+    </footer>
+
+  </div>
+
+  <script>
+    // ================= LOGIN =================
+    let total = 0;
+
+    window.onload = () => {
+      const user = localStorage.getItem("user");
+      user ? showCart(user) : showLogin();
+      renderCart();
+    };
+
+    function login() {
+      const u = username.value.trim();
+      const p = password.value.trim();
+      if (!u || !p) { alert("Enter username & password"); return; }
+      localStorage.setItem("user", u);
+      showCart(u);
+    }
+
+    function logout() { localStorage.removeItem("user"); localStorage.removeItem("cart"); location.reload(); }
+    function showLogin() { loginPage.classList.remove("hidden"); cartPage.classList.add("hidden"); }
+    function showCart(user) { userDisplay.innerText = `Hi, ${user}`; loginPage.classList.add("hidden"); cartPage.classList.remove("hidden"); }
+    function togglePassword() { password.type = password.type === "password" ? "text" : "password"; }
+
+    // ================= CATEGORIES =================
+    function showCategory(id) {
+      ["electronics", "dresses", "footwear"].forEach(i => document.getElementById(i).classList.add("hidden"));
+      document.getElementById(id).classList.remove("hidden");
+    }
+
+    // ================= CART =================
+    function addOrder(item, price) {
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const index = cart.findIndex(i => i.item === item);
+      if (index > -1) { cart[index].qty++; }
+      else { cart.push({ item, price, qty: 1 }); }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function removeCartItem(item) {
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      cart = cart.filter(i => i.item !== item);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function changeQty(item, delta) {
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      const index = cart.findIndex(i => i.item === item);
+      if (index > -1) {
+        cart[index].qty += delta;
+        if (cart[index].qty < 1) cart[index].qty = 1;
+      }
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function renderCart() {
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      orderList.innerHTML = "";
+      total = 0;
+      cart.forEach(({ item, price, qty }) => {
+        const row = orderList.insertRow();
+        row.innerHTML = `
+      <td class="border p-2">${item}</td>
+      <td class="border p-2">₹${price}</td>
+      <td class="border p-2">
+        <button onclick="changeQty('${item}',-1)" class="px-2 bg-gray-300 rounded">-</button>
+        ${qty}
+        <button onclick="changeQty('${item}',1)" class="px-2 bg-gray-300 rounded">+</button>
+      </td>
+      <td class="border p-2">
+        <button onclick="removeCartItem('${item}')" class="bg-red-500 text-white px-3 py-1 rounded">Remove</button>
+      </td>`;
+        total += price * qty;
+      });
+      document.getElementById("total").innerText = total;
+    }
+
+    // ================= CHECKOUT / PAYMENT =================
+    function submitOrder() {
+      let cart = JSON.parse(localStorage.getItem("cart") || "[]");
+      if (cart.length === 0) { alert("No items in cart!"); return; }
+      document.getElementById("checkoutSection").classList.remove("hidden");
+      document.getElementById("checkoutSection").scrollIntoView({ behavior: "smooth" });
+    }
+
+    function togglePaymentButton() {
+      const method = document.getElementById("paymentMethod").value;
+      if (method === "online") {
+        document.getElementById("placeOrderBtn").classList.add("hidden");
+        document.getElementById("payNowBtn").classList.remove("hidden");
+      } else {
+        document.getElementById("placeOrderBtn").classList.remove("hidden");
+        document.getElementById("payNowBtn").classList.add("hidden");
+      }
+    }
+
+    function placeOrder() {
+      const addr = document.getElementById("address").value.trim();
+      const name = document.getElementById("fullName").value.trim();
+      if (!addr || !name) { alert("Please fill name and address"); return; }
+      showSuccessPage("Cash on Delivery", addr);
+    }
+
+    function payOnline() {
+      const name = document.getElementById("fullName").value.trim();
+      const addr = document.getElementById("address").value.trim();
+      if (!name || !addr) { alert("Please fill name and address"); return; }
+
+      if (confirm("Proceed to pay ₹" + total + " online?")) {
+        showSuccessPage("Online Payment", addr);
+      }
+    }
+
+    function showSuccessPage(paymentMethod, addr) {
+      document.getElementById("successTotal").innerText = total;
+      document.getElementById("successPayment").innerText = paymentMethod;
+      document.getElementById("successAddress").innerText = addr;
+
+      localStorage.removeItem("cart");
+      renderCart();
+
+      document.getElementById("checkoutSection").classList.add("hidden");
+      document.getElementById("successPage").classList.remove("hidden");
+    }
+
+    // ================= SEARCH =================
+    function filterItems() {
+      const query = searchInput.value.toLowerCase();
+      const activeCategory = ["electronics", "dresses", "footwear"].find(id => !document.getElementById(id).classList.contains("hidden"));
+      if (!activeCategory) return;
+      const items = document.getElementById(activeCategory).querySelectorAll(".border.rounded-xl");
+      items.forEach(item => {
+        const name = item.querySelector("h3").innerText.toLowerCase();
+        item.classList.toggle("hidden", !name.includes(query));
+      });
+    }
+
+    // ================= BANNER SLIDER =================
+    const bannerImages = [
+      "f0f9e45724771f16745ad3f6f640d3ce.jpg",
+      "4f3a3f3ecd2a95f4bdd27d99625ba8aa.jpg",
+      "14cf1e013ffbfd6f4c052044e6ccb509.jpg",
+      "0ced76ccbf4fd078a1863408b3e805c5 (1).jpg"
+    ];
+
+    let currentIndex = 0;
+    const bannerImage = document.getElementById("bannerImage");
+
+    function nextBannerImage() {
+      currentIndex = (currentIndex + 1) % bannerImages.length;
+      bannerImage.src = bannerImages[currentIndex];
+    }
+
+    setInterval(nextBannerImage, 3000);
+  </script>
+
+</body>
+
+</html>
